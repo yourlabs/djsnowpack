@@ -101,15 +101,16 @@ class Middleware:
 
         if settings.DEBUG:
             tree = ElementTree()
-            url = f'http://localhost:{snowpack_start()}'
+            port = snowpack_start()
+            url = f'http://localhost:{port}'
 
-            with urlopen('http://localhost:8080') as conn:
+            with urlopen(f'http://localhost:{port}') as conn:
                 tree.parse(conn)
 
             for script in tree.findall('body/script'):
                 if src := script.attrib.get('src', False):
                     src = src + '/' if not src.startswith('/') else src
-                    script.attrib['src'] = 'http://localhost:8080' + src
+                    script.attrib['src'] = f'http://localhost:{port}' + src
 
                 tag = ['<script']
                 tag += [f'{k}="{v}"' for k, v in script.attrib.items()]
@@ -123,13 +124,16 @@ class Middleware:
 
             response.content = response.content.replace(
                 self.marker_script,
-                b'<script type="text/javascript">window.HMR_WEBSOCKET_URL="ws://localhost:8080/"</script>' + self.marker_script
+                b'<script type="text/javascript">window.HMR_WEBSOCKET_URL="ws://localhost:'
+                + str(port).encode('utf8')
+                + '/"</script>'
+                + self.marker_script
             )
 
             for link in tree.findall('head/link'):
                 if src := script.attrib.get('href', False):
                     src = src + '/' if not src.startswith('/') else src
-                    script.attrib['href'] = 'http://localhost:8080' + src
+                    script.attrib['href'] = f'http://localhost:{port}' + src
 
                 tag = ['<link']
                 tag += [f'{k}="{v}"' for k, v in link.attrib.items()]
