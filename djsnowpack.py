@@ -3,6 +3,7 @@ import json
 import os
 import psutil
 import socket
+import subprocess
 
 from django.conf import settings
 from urllib.request import urlopen
@@ -52,9 +53,18 @@ def snowpack_start():
         with open(path, 'w+') as f:
             json.dump(data, f)
 
-        os.execv('./node_modules/.bin/snowpack', [
-            'snowpack',
-            'dev',
+        npm = DJSNOWPACK.get(
+            'NPM',
+            subprocess.check_output(
+                'type -p npm',
+                shell=True,
+            ).strip().decode('utf8')
+        )
+
+        os.execv(npm, [
+            'npm',
+            'start',
+            '--',
             '--devOptions.port=' + str(data['port']),
             '--devOptions.output=stream',
             '--devOptions.open=none',
