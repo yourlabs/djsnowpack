@@ -136,7 +136,7 @@ class Middleware:
                 self.marker_script,
                 b'<script type="text/javascript">window.HMR_WEBSOCKET_URL="ws://localhost:'
                 + str(port).encode('utf8')
-                + '/"</script>'
+                + b'/"</script>'
                 + self.marker_script
             )
 
