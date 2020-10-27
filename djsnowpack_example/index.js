@@ -4,4 +4,4 @@ if (import.meta.hot) {
   });
 }
 
-document.querySelector('h2').innerHTML = 'djsnowpack working fine !'
+document.querySelector('h2').innerHTML = 'djsnowpack working fine !!!'
