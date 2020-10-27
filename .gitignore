@@ -1,0 +1,11 @@
+.eggs/
+.setupmeta.version
+__pycache__
+db.sqlite3
+djsnowpack.egg-info/
+djsnowpack_example/.djsnowpack.json
+djsnowpack_example/build
+djsnowpack_example/node_modules/
+test_djsnowpack.py
+
+
