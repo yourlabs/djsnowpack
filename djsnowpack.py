@@ -56,9 +56,9 @@ def snowpack_start():
         npm = DJSNOWPACK.get(
             'NPM',
             subprocess.check_output(
-                'type -p npm',
+                'type npm',
                 shell=True,
-            ).strip().decode('utf8')
+            ).strip().decode('utf8').split()[-1]
         )
 
         os.execv(npm, [
